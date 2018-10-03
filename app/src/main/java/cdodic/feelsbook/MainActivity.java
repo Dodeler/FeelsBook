@@ -19,11 +19,15 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
     protected List<Feeling> feelings;
+    private String[] feeling_type_strings = new String[]{"Love", "Joy", "Fear", "Anger", "Hope", "Sad"};
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -108,6 +112,22 @@ public class MainActivity extends AppCompatActivity {
     }
     public List<Feeling> getFeelings(){
         return feelings;
+    }
+    public Integer getFeelingCount(String feeling){
+        Integer feeling_count = 0;
+        for(int i=0; i<feelings.size(); i++){
+            if(feelings.get(i).getFeeling_type().equals(feeling)){
+                feeling_count += 1;
+            }
+        }
+        return feeling_count;
+    }
+    public HashMap<String, Integer> getAllFeelingCounts(){
+        HashMap<String, Integer> feeling_counts = new HashMap<>();
+        for(String s: feeling_type_strings){
+            feeling_counts.put(s, getFeelingCount(s));
+        }
+        return feeling_counts;
     }
     @Override
     protected void onDestroy(){
