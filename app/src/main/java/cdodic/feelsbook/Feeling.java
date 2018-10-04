@@ -6,7 +6,7 @@ import android.os.Parcelable;
 import java.io.Serializable;
 import java.util.Date;
 
-public class Feeling implements Parcelable, Serializable {
+public class Feeling implements Parcelable, Serializable, Comparable<Feeling> {
     private Date timestamp;
     private String comment;
     protected String feeling_type;
@@ -69,4 +69,8 @@ public class Feeling implements Parcelable, Serializable {
             return new Feeling[size];
         }
     };
+
+    public int compareTo(Feeling compare_feeling){
+        return this.getTimestamp().compareTo(((Feeling)compare_feeling).getTimestamp());
+    }
 }

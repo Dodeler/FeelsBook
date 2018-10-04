@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -33,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
     private String[] feeling_type_strings = new String[]{"Love", "Joy", "Fear", "Anger", "Hope", "Sad"};
     protected String filepath;
     @Override
-    protected void onCreate(Bundle savedInstanceState){
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 //        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -47,6 +48,10 @@ public class MainActivity extends AppCompatActivity {
 //                        .setAction("Action", null).show();
 //            }
 //        });
+    }
+    @Override
+    protected void onResume(){
+        super.onResume();
         //https://stackoverflow.com/questions/4118751/how-do-i-serialize-an-object-and-save-it-to-a-file-in-android{
         //https://stackoverflow.com/questions/24029726/read-a-file-if-it-doesnt-exist-then-create{
         this.filepath = getApplicationContext().getFilesDir().toString() + "feelings.sav";
@@ -71,8 +76,8 @@ public class MainActivity extends AppCompatActivity {
         }
         else {
             try {
-                if (fis.available() >= 0){
-
+                if (fis.available() <= 0){
+                    Log.d("DEBUG ---", "no stream");
                 }
                 else{
                     ObjectInputStream is = null;
@@ -83,8 +88,19 @@ public class MainActivity extends AppCompatActivity {
                     }
                     try {
 //                        Serializable cereal =
-                        feelings = (FeelingList) is.readObject();
+//                        feelings = (FeelingList) is.readObject();
 //                        feelings = (FeelingList) (Serializable) is.readObject();
+                        while(true){
+                            try{
+                                Log.d("DEBUG ---", "reading feeling: ");
+                                Feeling f = (Feeling)is.readObject();
+                                feelings.add(f);
+                                Log.d("DEBUG ---", "read feeling: "+ f.getFeeling_type());
+                            }
+                            catch (EOFException e){
+                                break;
+                            }
+                        }
                     } catch (ClassNotFoundException e) {
                         e.printStackTrace();
                     } catch (IOException e) {
@@ -176,9 +192,8 @@ public class MainActivity extends AppCompatActivity {
         return feeling_counts;
     }
     @Override
-    protected void onDestroy(){
-        super.onDestroy();
-        //https://stackoverflow.com/questions/4118751/how-do-i-serialize-an-object-and-save-it-to-a-file-in-android{
+    protected void onPause(){
+        super.onPause();
         FileOutputStream fos = null;
         try {
             fos = new FileOutputStream(filepath);
@@ -191,8 +206,16 @@ public class MainActivity extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        Log.d("DEBUG ----", "TRYING");
         try {
-            os.writeObject(this.feelings);
+            Log.d("DEBUG -----", "Trying to write object");
+            for(Feeling f: this.feelings.getFeelings()){
+                Log.d("DEBUG ---", "writing feeling: "+f.getFeeling_type());
+                os.writeObject(f);
+                os.flush();
+                Log.d("DEBUG ---", "wrote feeling: "+f.getFeeling_type());
+            }
+//            os.writeObject(this.feelings);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -206,6 +229,43 @@ public class MainActivity extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    @Override
+    protected void onDestroy(){
+        Log.d("DEBUG ---- ", "destroying activity");
+
+        //https://stackoverflow.com/questions/4118751/how-do-i-serialize-an-object-and-save-it-to-a-file-in-android{
+//        FileOutputStream fos = null;
+//        try {
+//            fos = new FileOutputStream(filepath);
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        }
+//        ObjectOutputStream os = null;
+//        try {
+//            os = new ObjectOutputStream(fos);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        Log.d("DEBUG ----", "TRYING");
+//        try {
+//            Log.d("DEBUG -----", "Trying to write object");
+//            os.writeObject(this.feelings);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        try {
+//            os.close();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        try {
+//            fos.close();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
         //}
+        super.onDestroy();
+        Log.d("DEBUG ---- ", "super destroyed");
     }
 }
