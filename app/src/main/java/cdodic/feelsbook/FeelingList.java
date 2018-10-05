@@ -2,7 +2,6 @@ package cdodic.feelsbook;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.util.Log;
 
 import java.io.EOFException;
 import java.io.File;
@@ -13,39 +12,64 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
-//https://stackoverflow.com/questions/22446359/android-class-parcelable-with-arraylist
 public class FeelingList implements Parcelable {
     private List<Feeling> feelings;
+    private String[] feeling_type_strings = new String[]{"Love", "Joy", "Fear", "Anger", "Hope", "Sad"};
+
     public FeelingList(){
         feelings = new ArrayList<Feeling>();
-
     }
+
     public FeelingList(Parcel p){
         feelings = p.readArrayList(Feeling.class.getClassLoader());
     }
+    //List implementations
+    // Note: chose not to subclass list to prevent some operations
     public void add(Feeling f){
         feelings.add(f);
     }
-    public List<Feeling> getFeelings(){
-        return feelings;
-    }
+
     public int size(){
         return feelings.size();
     }
+
     public void set(int i, Feeling f){
         feelings.set(i, f);
     }
+
     public void remove(int i){
         feelings.remove(i);
     }
+
     public Feeling get(int i){
         return feelings.get(i);
     }
+
+    public void sort(){
+        Collections.sort(feelings);
+    }
+
+    public List<Feeling> getFeelings(){
+        return feelings;
+    }
+
+    //collected number of feelings in the list matching the input feeling
+    public Integer getFeelingCount(String feeling){
+        Integer feeling_count = 0;
+        for(int i=0; i<feelings.size(); i++){
+            if(feelings.get(i).getFeeling_type().equals(feeling)){
+                feeling_count += 1;
+            }
+        }
+        return feeling_count;
+    }
+
+    //Implementation for parcelable
     @Override
     public int describeContents(){
         return 0;
@@ -64,15 +88,12 @@ public class FeelingList implements Parcelable {
             return new FeelingList[size];
         }
     };
-    public Integer getFeelingCount(String feeling){
-        Integer feeling_count = 0;
-        for(int i=0; i<feelings.size(); i++){
-            if(feelings.get(i).getFeeling_type().equals(feeling)){
-                feeling_count += 1;
-            }
-        }
-        return feeling_count;
-    }
+
+    // information how to read/write to file gathered from
+    // https://stackoverflow.com/questions/4118751/how-do-i-serialize-an-object-and-save-it-to-a-file-in-android
+    // as well as knowledge from lab
+
+    //Collect feeling list from file (serialized)
     public static FeelingList readFeelings(String filepath){
         FeelingList fl = new FeelingList();
         File file = new File(filepath);
@@ -83,7 +104,6 @@ public class FeelingList implements Parcelable {
                 e.printStackTrace();
             }
         }
-        //}
 
         FileInputStream fis = null;
         try {
@@ -97,7 +117,6 @@ public class FeelingList implements Parcelable {
         else {
             try {
                 if (fis.available() <= 0){
-                    Log.d("DEBUG ---", "no stream");
                 }
                 else{
                     ObjectInputStream is = null;
@@ -107,15 +126,10 @@ public class FeelingList implements Parcelable {
                         e.printStackTrace();
                     }
                     try {
-//                        Serializable cereal =
-//                        feelings = (FeelingList) is.readObject();
-//                        feelings = (FeelingList) (Serializable) is.readObject();
                         while(true){
                             try{
-                                Log.d("DEBUG ---", "reading feeling: ");
                                 Feeling f = (Feeling)is.readObject();
                                 fl.add(f);
-                                Log.d("DEBUG ---", "read feeling: "+ f.getFeeling_type());
                             }
                             catch (EOFException e){
                                 break;
@@ -143,9 +157,8 @@ public class FeelingList implements Parcelable {
         }
         return fl;
     }
-    public void sort(){
-        Collections.sort(feelings);
-    }
+
+    //Write feelingslist to file (serialized)
     public static void writeFeelings(FeelingList fl, String filepath){
         PrintWriter pw = null;
         try {
@@ -166,16 +179,11 @@ public class FeelingList implements Parcelable {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Log.d("DEBUG ----", "TRYING");
         try {
-            Log.d("DEBUG -----", "Trying to write object");
             for(Feeling f: fl.feelings){
-                Log.d("DEBUG ---", "writing feeling: "+f.getFeeling_type());
                 os.writeObject(f);
                 os.flush();
-                Log.d("DEBUG ---", "wrote feeling: "+f.getFeeling_type());
             }
-//            os.writeObject(this.feelings);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -189,11 +197,14 @@ public class FeelingList implements Parcelable {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
-//    private void writeObject(ObjectOutputStream oos) throws IOException {
-//        oos.defaultWriteObject();
-//        oos.writeObject()
-//    }
 
+    // Creates hashmap of feeling types to their count in history (key: feeling_type, value: count)
+    public HashMap<String, Integer> getAllFeelingCounts(){
+        HashMap<String, Integer> feeling_counts = new HashMap<>();
+        for(String s: feeling_type_strings){
+            feeling_counts.put(s, getFeelingCount(s));
+        }
+        return feeling_counts;
+    }
 }
