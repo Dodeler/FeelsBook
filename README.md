@@ -8,8 +8,13 @@ Information derived from lab/class material as well as from https://developer.an
 and more specifically from these sources:
 
 https://stackoverflow.com/questions/22446359/android-class-parcelable-with-arraylist
+
 https://developer.android.com/guide/topics/ui/layout/recyclerview
-https://stackoverflow.com/questions/4118751/how-do-i-serialize-an-object-and-save-it-to-a-file-in-android{
+
+https://stackoverflow.com/questions/4118751/how-do-i-serialize-an-object-and-save-it-to-a-file-in-android
+
 https://stackoverflow.com/questions/24029726/read-a-file-if-it-doesnt-exist-then-create
+
 https://developer.android.com/guide/topics/ui/controls/pickers
+
 https://stackoverflow.com/questions/41200876/how-to-set-onitemclicklistener-for-recyclerview
