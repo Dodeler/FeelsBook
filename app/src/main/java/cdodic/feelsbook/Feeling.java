@@ -29,6 +29,15 @@ public class Feeling implements Parcelable, Serializable, Comparable<Feeling> {
     public String getFeeling_type(){
         return feeling_type;
     }
+    protected void setTime(int h, int m){
+        timestamp.setHours(h);
+        timestamp.setMinutes(m);
+    }
+    protected void setDate(int year, int month, int day){
+        timestamp.setYear(year);
+        timestamp.setMonth(month);
+        timestamp.setDate(day);
+    }
     public Feeling(Date d, String f){
         timestamp = d;
         setFeelingType(f);

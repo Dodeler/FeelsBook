@@ -54,77 +54,23 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         //https://stackoverflow.com/questions/4118751/how-do-i-serialize-an-object-and-save-it-to-a-file-in-android{
         //https://stackoverflow.com/questions/24029726/read-a-file-if-it-doesnt-exist-then-create{
-        this.filepath = getApplicationContext().getFilesDir().toString() + "feelings.sav";
-        File file = new File(filepath);
-        if(!file.exists()){
-            try {
-                file.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        //}
-
-        FileInputStream fis = null;
-        try {
-            fis = new FileInputStream(filepath);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        if (fis == null){
-
-        }
-        else {
-            try {
-                if (fis.available() <= 0){
-                    Log.d("DEBUG ---", "no stream");
-                }
-                else{
-                    ObjectInputStream is = null;
-                    try {
-                        is = new ObjectInputStream(fis);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    try {
-//                        Serializable cereal =
-//                        feelings = (FeelingList) is.readObject();
-//                        feelings = (FeelingList) (Serializable) is.readObject();
-                        while(true){
-                            try{
-                                Log.d("DEBUG ---", "reading feeling: ");
-                                Feeling f = (Feeling)is.readObject();
-                                feelings.add(f);
-                                Log.d("DEBUG ---", "read feeling: "+ f.getFeeling_type());
-                            }
-                            catch (EOFException e){
-                                break;
-                            }
-                        }
-                    } catch (ClassNotFoundException e) {
-                        e.printStackTrace();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    try {
-                        is.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    try {
-                        fis.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+        this.filepath = getApplicationContext().getFilesDir().toString() + "/feelings.sav";
+        feelings = FeelingList.readFeelings(filepath);
 
         //}
     }
-
+//    @Override
+//    protected void onActivityResult(int reqc, int resc, Intent data){
+//        Bundle b = getIntent().getBundleExtra("bundle");
+//        Class cls = null;
+//        try {
+//            cls = Class.forName("cdodic.feelsbook.Feeling");
+//        } catch (ClassNotFoundException e) {
+//            e.printStackTrace();
+//        }
+//        b.setClassLoader(cls.getClassLoader());
+//        feelings = b.getParcelable("feelings");
+//    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -172,6 +118,14 @@ public class MainActivity extends AppCompatActivity {
 
         startActivity(intent);
     }
+
+    public void gotoStatistics(View view){
+        Bundle b = new Bundle();
+        b.putParcelable("feelings", this.feelings);
+        Intent intent = new Intent(this, Statistics.class);
+        intent.putExtra("bundle", b);
+        startActivity(intent);
+    }
     public FeelingList getFeelings(){
         return feelings;
     }
@@ -194,41 +148,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause(){
         super.onPause();
-        FileOutputStream fos = null;
-        try {
-            fos = new FileOutputStream(filepath);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        ObjectOutputStream os = null;
-        try {
-            os = new ObjectOutputStream(fos);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        Log.d("DEBUG ----", "TRYING");
-        try {
-            Log.d("DEBUG -----", "Trying to write object");
-            for(Feeling f: this.feelings.getFeelings()){
-                Log.d("DEBUG ---", "writing feeling: "+f.getFeeling_type());
-                os.writeObject(f);
-                os.flush();
-                Log.d("DEBUG ---", "wrote feeling: "+f.getFeeling_type());
-            }
-//            os.writeObject(this.feelings);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            os.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            fos.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        FeelingList.writeFeelings(feelings, filepath);
     }
     @Override
     protected void onDestroy(){

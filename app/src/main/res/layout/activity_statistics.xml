@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Statistics">
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
+        android:stretchColumns="1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+
+        <TableRow
+            android:id="@+id/love_string"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/darker_gray">
+
+            <TextView
+                android:layout_column="1"
+                android:padding="3dp"
+                android:text="Love" />
+
+            <TextView
+                android:id="@+id/love_val"
+                android:gravity="end"
+                android:padding="3dp"
+                android:text="0" />
+
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/joy_string"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/darker_gray">
+
+            <TextView
+                android:layout_column="1"
+                android:padding="3dp"
+                android:text="Joy" />
+
+            <TextView
+                android:id="@+id/joy_val"
+                android:gravity="end"
+                android:padding="3dp"
+                android:text="0" />
+
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/surprise_string"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/darker_gray">
+
+            <TextView
+                android:layout_column="1"
+                android:padding="3dp"
+                android:text="Surprise" />
+
+            <TextView
+                android:id="@+id/surprise_val"
+                android:gravity="end"
+                android:padding="3dp"
+                android:text="0" />
+
+        </TableRow>
+        <TableRow
+            android:id="@+id/anger_string"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/darker_gray">
+
+            <TextView
+                android:layout_column="1"
+                android:padding="3dp"
+                android:text="Anger" />
+
+            <TextView
+                android:id="@+id/anger_val"
+                android:gravity="end"
+                android:padding="3dp"
+                android:text="0" />
+
+        </TableRow>
+        <TableRow
+            android:id="@+id/sadness_string"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/darker_gray">
+
+            <TextView
+                android:layout_column="1"
+                android:padding="3dp"
+                android:text="Sadness" />
+
+            <TextView
+                android:id="@+id/sadness_val"
+                android:gravity="end"
+                android:padding="3dp"
+                android:text="0" />
+
+        </TableRow>
+        <TableRow
+            android:id="@+id/fear_string"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/darker_gray">
+
+            <TextView
+                android:layout_column="1"
+                android:padding="3dp"
+                android:text="Fear" />
+
+            <TextView
+                android:id="@+id/fear_val"
+                android:gravity="end"
+                android:padding="3dp"
+                android:text="0" />
+
+        </TableRow>
+    </TableLayout>
+</android.support.constraint.ConstraintLayout>

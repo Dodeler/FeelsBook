@@ -1,4 +1,12 @@
 <resources>
     <string name="app_name">FeelsBook</string>
     <string name="action_settings">Settings</string>
+    <string-array name="feelings_array">
+        <item>"Love"</item>
+        <item>"Joy"</item>
+        <item>"Surprise"</item>
+        <item>"Anger"</item>
+        <item>"Sadness"</item>
+        <item>"Fear"</item>
+    </string-array>
 </resources>
