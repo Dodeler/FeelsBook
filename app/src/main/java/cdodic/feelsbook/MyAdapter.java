@@ -6,9 +6,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.util.List;
-
 //Recycler view adapter for populating the history activity (dynamically) with saved feelings
+// information on how to construct the adapter was gathered from:
+//https://www.androidhive.info/2016/01/android-working-with-recycler-view/
+// as well as from android
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     private FeelingList feelings_list;
 

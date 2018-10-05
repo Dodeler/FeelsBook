@@ -6,6 +6,10 @@ import android.os.Parcelable;
 import java.io.Serializable;
 import java.util.Date;
 
+// Information on how to serialize/parcel feelings was collected from:
+// //https://stackoverflow.com/questions/4118751/how-do-i-serialize-an-object-and-save-it-to-a-file-in-android{
+// and //https://stackoverflow.com/questions/22446359/android-class-parcelable-with-arraylist
+// as well as from android
 public class Feeling implements Parcelable, Serializable, Comparable<Feeling> {
     // Feeling class
     // holds information about a recorded feelings:

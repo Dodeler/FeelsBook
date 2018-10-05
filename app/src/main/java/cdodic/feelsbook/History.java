@@ -1,13 +1,13 @@
 package cdodic.feelsbook;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
-
+// recycler view is a main component of this activity and its usage was derived from:
+// // https://developer.android.com/guide/topics/ui/layout/recyclerview
 public class History extends AppCompatActivity {
     private RecyclerView recycler_view;
     private RecyclerView.Adapter feeling_adapter;
@@ -17,7 +17,6 @@ public class History extends AppCompatActivity {
     private Intent ret_data;
     private Boolean edited;
     private int sel_position;
-    private long button_click_time;
 
     //Helper method for launching edit activity
     protected void launch_edit(Intent intent){
@@ -27,7 +26,7 @@ public class History extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_history); // https://developer.android.com/guide/topics/ui/layout/recyclerview
+        setContentView(R.layout.activity_history);
         //Collected bundled feelings list
         Bundle b = getIntent().getBundleExtra("bundle");
         Class cls = null;
@@ -96,7 +95,6 @@ public class History extends AppCompatActivity {
 
         recycler_view.addOnItemTouchListener(createListener(recycler_view));
 
-//                //https://stackoverflow.com/questions/31868874/fast-taps-clicks-on-recyclerview-opens-multiple-fragments
         //}
     }
     // Helper method to create listener (reduce clutter)
@@ -104,12 +102,6 @@ public class History extends AppCompatActivity {
         return new RecyclerTouchListener(getApplicationContext(), (RecyclerView) v, new RecyclerTouchListener.ClickListener() {
             @Override
             public void onClick(View view, int position) {
-                //https://stackoverflow.com/questions/31868874/fast-taps-clicks-on-recyclerview-opens-multiple-fragments
-                long now = System.currentTimeMillis();
-                if (now - button_click_time < 300){
-                    return;
-                }
-                button_click_time = now;
                 sel_position = position;
                 sel_feeling = feelings.get(position);
                 Bundle b = new Bundle();

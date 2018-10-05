@@ -2,7 +2,6 @@ package cdodic.feelsbook;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.util.Log;
 
 import java.io.EOFException;
 import java.io.File;
@@ -13,14 +12,14 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
-//https://stackoverflow.com/questions/22446359/android-class-parcelable-with-arraylist
 public class FeelingList implements Parcelable {
     private List<Feeling> feelings;
+    private String[] feeling_type_strings = new String[]{"Love", "Joy", "Fear", "Anger", "Hope", "Sad"};
 
     public FeelingList(){
         feelings = new ArrayList<Feeling>();
@@ -89,6 +88,10 @@ public class FeelingList implements Parcelable {
             return new FeelingList[size];
         }
     };
+
+    // information how to read/write to file gathered from
+    // https://stackoverflow.com/questions/4118751/how-do-i-serialize-an-object-and-save-it-to-a-file-in-android
+    // as well as knowledge from lab
 
     //Collect feeling list from file (serialized)
     public static FeelingList readFeelings(String filepath){
@@ -194,5 +197,14 @@ public class FeelingList implements Parcelable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    // Creates hashmap of feeling types to their count in history (key: feeling_type, value: count)
+    public HashMap<String, Integer> getAllFeelingCounts(){
+        HashMap<String, Integer> feeling_counts = new HashMap<>();
+        for(String s: feeling_type_strings){
+            feeling_counts.put(s, getFeelingCount(s));
+        }
+        return feeling_counts;
     }
 }

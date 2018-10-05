@@ -1,8 +1,7 @@
 package cdodic.feelsbook;
 
-import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
 public class Statistics extends AppCompatActivity {
@@ -12,8 +11,7 @@ public class Statistics extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_statistics);
 
-        Intent intent = getIntent();
-        // specify an adapter (see also next example)
+        // Collect feelings list
         Bundle b = getIntent().getBundleExtra("bundle");
         Class cls = null;
         try {
@@ -27,6 +25,8 @@ public class Statistics extends AppCompatActivity {
     @Override
     protected void onResume(){
         super.onResume();
+        // Proof of concept for statistics activity
+        // should use getAllFeelingCounts() and dynamically generate table
         TextView tv1 = findViewById(R.id.love_val);
         TextView tv2 = findViewById(R.id.joy_val);
         TextView tv3 = findViewById(R.id.surprise_val);

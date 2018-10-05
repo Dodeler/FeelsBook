@@ -19,13 +19,6 @@
         android:layout_alignParentTop="true"
         android:textSize="16dp"
         android:textStyle="bold" />
-    <!--android:textColor="@color/title"-->
-
-    <!--<TextView-->
-        <!--android:id="@+id/genre"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_below="@id/title" />-->
 
     <TextView
         android:id="@+id/date"
@@ -33,7 +26,5 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
          />
-    <!--android:textColor="@color/year"-->
 
 </RelativeLayout>
-<!--//}-->

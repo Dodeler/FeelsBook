@@ -1,35 +1,33 @@
 package cdodic.feelsbook;
 
 import android.app.Dialog;
+import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-
-import android.app.TimePickerDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.text.format.DateFormat;
 import android.widget.TimePicker;
 
-import java.util.Calendar;
 import java.util.Date;
 
-//https://developer.android.com/guide/topics/ui/controls/pickers
+// Information was gathered from android about how to implement pickers
+// //https://developer.android.com/guide/topics/ui/controls/pickers
 public class TimePickerFragment extends DialogFragment
         implements TimePickerDialog.OnTimeSetListener {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        // Use the current time as the default values for the picker
+        // Use the date of the feeling being edited for default value
         EditFeeling activity = (EditFeeling) getActivity();
         Date d = activity.feeling.getTimestamp();
 
-        // Create a new instance of TimePickerDialog and return it
+        // create time picker dialog
         return new TimePickerDialog(getActivity(), this, d.getHours(), d.getMinutes(),
                 DateFormat.is24HourFormat(getActivity()));
     }
 
+    @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-        // Do something with the time chosen by the user
-//        String time = Integer.toString(hourOfDay) + ":" + Integer.toString(minute) + ":00";
+        // pass time selected back to calling activity
         EditFeeling activity = (EditFeeling) getActivity();
         activity.setUserTime(hourOfDay, minute);
     }
