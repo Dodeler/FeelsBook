@@ -19,7 +19,7 @@ public class History extends AppCompatActivity {
     private int sel_position;
 
     //Helper method for launching edit activity
-    protected void launch_edit(Intent intent){
+    protected void gotoEdit(Intent intent){
         startActivityForResult(intent, 0);
     }
 
@@ -108,7 +108,7 @@ public class History extends AppCompatActivity {
                 b.putParcelable("feeling", sel_feeling);
                 Intent intent = new Intent(getApplicationContext(), EditFeeling.class);
                 intent.putExtra("bundle", b);
-                launch_edit(intent);
+                gotoEdit(intent);
             }
 
             @Override
