@@ -7,29 +7,28 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.Toolbar;
-
-import java.util.List;
 
 public class History extends AppCompatActivity {
-    private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
+    private RecyclerView recycler_view;
+    private RecyclerView.Adapter feeling_adapter;
+    private RecyclerView.LayoutManager layout_manager;
     private FeelingList feelings;
     private Feeling sel_feeling;
     private Intent ret_data;
     private Boolean edited;
     private int sel_position;
     private long button_click_time;
+
+    //Helper method for launching edit activity
+    protected void launch_edit(Intent intent){
+        startActivityForResult(intent, 0);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history); // https://developer.android.com/guide/topics/ui/layout/recyclerview
-//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
-//        Intent intent = getIntent();
-        // specify an adapter (see also next example)
+        //Collected bundled feelings list
         Bundle b = getIntent().getBundleExtra("bundle");
         Class cls = null;
         try {
@@ -41,39 +40,32 @@ public class History extends AppCompatActivity {
         feelings = b.getParcelable("feelings");
         edited = false;
     }
+
+    //Edit activity is created expecting a result - this method accepts the result with result code
     @Override
     protected void onActivityResult(int reqc, int resc, Intent data){
-//        super.onActivityResult(reqc, resc, data);
-        Log.d("DEBUG =-= ", "HERE! resc: "+Integer.toString(resc));
+        // feeling has been modified (save button selected)
         if(resc == 123){
             ret_data = data;
             edited = true;
         }
+        // feelings was deleted (delete button selected)
         else if (resc == 44){
             ret_data = null;
             edited = true;
         }
-
-
-//
-//        Bundle listb = new Bundle();
-//        listb.putParcelable("feelings", this.feelings);
-//        Intent intent = new Intent();
-//        intent.putExtra("bundle", listb);
-//
-//        setResult(RESULT_OK, intent);
     }
-    protected void launch_edit(Intent intent){
-        startActivityForResult(intent, 0);
-    }
+
     @Override
     protected void onResume(){
         super.onResume();
+        //flag to check if feeling was edited (if coming from editfeeling activity)
         if(edited){
-            Log.d("DEBUG ----", "HERE222!");
+            // if deleted
             if (ret_data == null){
                 feelings.remove(sel_position);
             }
+            //if modified
             else {
                 Bundle b = ret_data.getBundleExtra("bundle");
                 Class cls = null;
@@ -85,31 +77,33 @@ public class History extends AppCompatActivity {
                 b.setClassLoader(cls.getClassLoader());
                 sel_feeling = b.getParcelable("feeling");
                 feelings.set(sel_position, sel_feeling);
-                Log.d("DEBUG----", sel_feeling.getFeeling_type());
             }
+            //update feelinglist saved in file
             FeelingList.writeFeelings(feelings, getApplicationContext().getFilesDir().toString() + "/feelings.sav");
             edited = false;
         }
 
-        mRecyclerView = findViewById(R.id.recycler);
+        //sets up and fills recycler view with feelings based on format specified by adapter
+        recycler_view = findViewById(R.id.recycler);
+        recycler_view.setHasFixedSize(true);
+        layout_manager = new LinearLayoutManager(this);
+        recycler_view.setLayoutManager(layout_manager);
 
-        // use this setting to improve performance if you know that changes
-        // in content do not change the layout size of the RecyclerView
-        mRecyclerView.setHasFixedSize(true);
-
-        // use a linear layout manager
-        mLayoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-
+        //sort feelings (on date) before populating recycler view
         feelings.sort();
-        mAdapter = new MyAdapter(feelings);
-        mRecyclerView.setAdapter(mAdapter);
+        feeling_adapter = new MyAdapter(feelings);
+        recycler_view.setAdapter(feeling_adapter);
 
-        mRecyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), mRecyclerView, new RecyclerTouchListener.ClickListener() {
+        recycler_view.addOnItemTouchListener(createListener(recycler_view));
+
+//                //https://stackoverflow.com/questions/31868874/fast-taps-clicks-on-recyclerview-opens-multiple-fragments
+        //}
+    }
+    // Helper method to create listener (reduce clutter)
+    private RecyclerTouchListener createListener(View v){
+        return new RecyclerTouchListener(getApplicationContext(), (RecyclerView) v, new RecyclerTouchListener.ClickListener() {
             @Override
             public void onClick(View view, int position) {
-//                Button button = (Button) view;
-//                button.setEnabled(false);
                 //https://stackoverflow.com/questions/31868874/fast-taps-clicks-on-recyclerview-opens-multiple-fragments
                 long now = System.currentTimeMillis();
                 if (now - button_click_time < 300){
@@ -123,21 +117,13 @@ public class History extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), EditFeeling.class);
                 intent.putExtra("bundle", b);
                 launch_edit(intent);
-
-//                Toast.makeText(getApplicationContext(), movie.getTitle() + " is selected!", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onLongClick(View view, int position) {
 
             }
-        }));
-        //}
-
+        });
     }
-
-
-
-
 }
 
