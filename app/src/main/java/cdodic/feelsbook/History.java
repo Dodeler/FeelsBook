@@ -90,7 +90,7 @@ public class History extends AppCompatActivity {
 
         //sort feelings (on date) before populating recycler view
         feelings.sort();
-        feeling_adapter = new MyAdapter(feelings);
+        feeling_adapter = new FeelingAdapter(feelings);
         recycler_view.setAdapter(feeling_adapter);
 
         recycler_view.addOnItemTouchListener(createListener(recycler_view));
