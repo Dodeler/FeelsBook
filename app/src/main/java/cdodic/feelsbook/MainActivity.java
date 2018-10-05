@@ -95,6 +95,7 @@ public class MainActivity extends AppCompatActivity {
     public void sendFeel(View view){
         EditText editText = (EditText) findViewById(R.id.editText2);
         String comment = editText.getText().toString();
+        editText.setText("");
         Button b = (Button) view;
         String feeling_type = b.getText().toString();
         Log.d("DEBUG ------------", feeling_type);

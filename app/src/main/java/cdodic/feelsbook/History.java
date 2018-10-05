@@ -101,7 +101,7 @@ public class History extends AppCompatActivity {
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-
+        feelings.sort();
         mAdapter = new MyAdapter(feelings);
         mRecyclerView.setAdapter(mAdapter);
 

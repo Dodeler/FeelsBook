@@ -15,6 +15,7 @@ import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 //https://stackoverflow.com/questions/22446359/android-class-parcelable-with-arraylist
@@ -142,7 +143,9 @@ public class FeelingList implements Parcelable {
         }
         return fl;
     }
-
+    public void sort(){
+        Collections.sort(feelings);
+    }
     public static void writeFeelings(FeelingList fl, String filepath){
         PrintWriter pw = null;
         try {
