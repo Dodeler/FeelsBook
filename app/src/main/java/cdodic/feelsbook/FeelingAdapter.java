@@ -10,13 +10,13 @@ import android.widget.TextView;
 // information on how to construct the adapter was gathered from:
 //https://www.androidhive.info/2016/01/android-working-with-recycler-view/
 // as well as from android
-public class FeelingAdapter extends RecyclerView.Adapter<FeelingAdapter.MyViewHolder> {
+public class FeelingAdapter extends RecyclerView.Adapter<FeelingAdapter.FeelingViewHolder> {
     private FeelingList feelings_list;
 
     //View holder for adapter - stores displayed attribute views
-    public class MyViewHolder extends RecyclerView.ViewHolder {
+    public class FeelingViewHolder extends RecyclerView.ViewHolder {
         public TextView feeling, date;
-        public MyViewHolder(View v) {
+        public FeelingViewHolder(View v) {
             super(v);
             feeling = (TextView) v.findViewById(R.id.feeling);
             date = (TextView) v.findViewById(R.id.date);
@@ -31,18 +31,18 @@ public class FeelingAdapter extends RecyclerView.Adapter<FeelingAdapter.MyViewHo
 
     //creates view holder
     @Override
-    public FeelingAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public FeelingViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.my_text_view,
                                                                 parent,
                                                     false);
-        return new MyViewHolder(v);
+        return new FeelingViewHolder(v);
     }
 
     //
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
+    public void onBindViewHolder(FeelingViewHolder holder, int position) {
         Feeling feeling = feelings_list.get(position);
-        holder.feeling.setText(feeling.getFeeling_type());
+        holder.feeling.setText(feeling.getFeelingType());
         holder.date.setText(feeling.getTimestamp().toString());
 
     }

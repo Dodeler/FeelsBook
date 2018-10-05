@@ -40,7 +40,7 @@ public class Feeling implements Parcelable, Serializable, Comparable<Feeling> {
         feeling_type = feeling;
     }
 
-    public String getFeeling_type(){
+    public String getFeelingType(){
         return feeling_type;
     }
 

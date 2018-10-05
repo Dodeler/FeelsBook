@@ -103,7 +103,7 @@ public class EditFeeling extends AppCompatActivity implements AdapterView.OnItem
         String[] feeling_array = getResources().getStringArray(R.array.feelings_array);
         int id = 0;
         for(int i=0;i<feeling_array.length;i++){
-            if(feeling_array[i].equals(feeling.getFeeling_type())){
+            if(feeling_array[i].equals(feeling.getFeelingType())){
                 id = i;
             }
         }

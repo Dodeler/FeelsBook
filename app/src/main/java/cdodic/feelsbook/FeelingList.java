@@ -62,7 +62,7 @@ public class FeelingList implements Parcelable {
     public Integer getFeelingCount(String feeling){
         Integer feeling_count = 0;
         for(int i=0; i<feelings.size(); i++){
-            if(feelings.get(i).getFeeling_type().equals(feeling)){
+            if(feelings.get(i).getFeelingType().equals(feeling)){
                 feeling_count += 1;
             }
         }
